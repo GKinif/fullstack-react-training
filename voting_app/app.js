@@ -42,52 +42,44 @@ class ProductList extends React.Component {
     };
 };
 
-class Product extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleUpVote = this.handleUpVote.bind(this);
-        this.handleDownVote = this.handleDownVote.bind(this);
+function Product(props) {
+    function handleUpVote() {
+        props.onVote(props.id, 1);
     };
 
-    handleUpVote() {
-        this.props.onVote(this.props.id, 1);
-    };
-
-    handleDownVote() {
-        this.props.onVote(this.props.id, -1);
+    function handleDownVote() {
+        props.onVote(props.id, -1);
     }
 
-    render() {
-        return (
-            <div className='item'>
-                <div className='image'>
-                    <img src={this.props.product_image_url} />
+    return (
+        <div className='item'>
+            <div className='image'>
+                <img src={props.product_image_url} />
+            </div>
+            <div className='middle aligned content'>
+                <div className='header'>
+                    <a onClick={handleUpVote}>
+                        <i className='large caret up icon'></i>
+                    </a>
+                    {props.votes}
+                    <a onClick={handleDownVote}>
+                        <i className='large caret down icon'></i>
+                    </a>
                 </div>
-                <div className='middle aligned content'>
-                    <div className='header'>
-                        <a onClick={this.handleUpVote}>
-                            <i className='large caret up icon'></i>
-                        </a>
-                        {this.props.votes}
-                        <a onClick={this.handleDownVote}>
-                            <i className='large caret down icon'></i>
-                        </a>
-                    </div>
-                    <div className='description'>
-                        <a href={this.props.url}>{this.props.title}</a>
-                    </div>
-                    <div className='extra'>
-                        <span>Submitted by: </span>
-                        <img
-                            className='ui avatar image'
-                            src={this.props.submitter_avatar_url}
-                        />
-                    </div>
+                <div className='description'>
+                    <a href={props.url}>{props.title}</a>
+                </div>
+                <div className='extra'>
+                    <span>Submitted by: </span>
+                    <img
+                        className='ui avatar image'
+                        src={props.submitter_avatar_url}
+                    />
                 </div>
             </div>
-        );
-    };
-};
+        </div>
+    );
+}
 
 ReactDOM.render(
     <ProductList />,
