@@ -1,8 +1,11 @@
 class ProductList extends React.Component {
     constructor() {
         super();
+        this.sortValue = 1;
         this.state = {products: []};
         this.handleProductUpVote = this.handleProductUpVote.bind(this);
+        this.handleAscSort = this.handleAscSort.bind(this);
+        this.handleDescSort = this.handleDescSort.bind(this);
     };
 
     componentDidMount() {
@@ -10,13 +13,23 @@ class ProductList extends React.Component {
     };
 
     updateState() {
-        const products = Data.sort((a, b) => b.votes - a.votes);
+        const products = Data.sort((a, b) => (b.votes - a.votes) * this.sortValue);
         this.setState({ products });
     };
 
     handleProductUpVote(productId, incValue) {
         let product = Data.find(curr => curr.id === productId);
         product.votes = product.votes + incValue;
+        this.updateState();
+    };
+
+    handleAscSort() {
+        this.sortValue = 1;
+        this.updateState();
+    };
+
+    handleDescSort() {
+        this.sortValue = -1;
         this.updateState();
     };
 
@@ -35,8 +48,19 @@ class ProductList extends React.Component {
             />
         ));
         return (
-            <div className='ui items'>
-                {products}
+            <div>
+                <div>
+                    <a onClick={this.handleAscSort}>
+                        <i className='large caret up icon'></i>
+                    </a>
+                    Sort
+                    <a onClick={this.handleDescSort}>
+                        <i className='large caret down icon'></i>
+                    </a>
+                </div>
+                <div className='ui items'>
+                    {products}
+                </div>
             </div>
         );
     };
